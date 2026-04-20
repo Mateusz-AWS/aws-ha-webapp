@@ -3,7 +3,8 @@
 This project simulates a production-like highly available web application environment on AWS.
 
 Live Demo: http://alb-web-996721267.us-east-1.elb.amazonaws.com/
-This setup ensures high availability by distributing traffic and automatically replacing unhealthy instances.
+
+This setup ensures high availability by distributing traffic across multiple instances and automatically replacing unhealthy ones.
 
 ---
 
@@ -11,16 +12,20 @@ This setup ensures high availability by distributing traffic and automatically r
 
 ![Architecture](Architecture.png)
 
+The application is deployed across multiple Availability Zones using an Application Load Balancer and Auto Scaling Group to ensure high availability and fault tolerance.
+
 ---
 
 ## Technologies Used
 
-* Amazon EC2
-* Application Load Balancer (ALB)
-* Auto Scaling Group (ASG)
-* Amazon CloudWatch
-* Amazon SNS
-* HTML (simple web application)
+* Amazon EC2  
+* Application Load Balancer (ALB)  
+* Auto Scaling Group (ASG)  
+* Amazon CloudWatch  
+* Amazon SNS  
+* Amazon VPC  
+* Launch Template  
+* HTML (simple web application)  
 
 ---
 
@@ -30,8 +35,8 @@ The application is a simple web page deployed on EC2 instances.
 
 It displays:
 
-* Server name (web-1 / web-2)
-* Basic project information
+* Server name (web-1 / web-2)  
+* Basic project information  
 
 The load balancer distributes traffic between instances.
 
@@ -73,7 +78,7 @@ Target groups ensure only healthy instances receive traffic.
 
 ## Auto Scaling
 
-Auto Scaling automatically replaces unhealthy instances and maintains the desired number of instances.
+Auto Scaling automatically replaces unhealthy instances and maintains the desired number of instances across multiple Availability Zones.
 
 ![Auto Scaling Activities](screenshots/auto-scaling-activities.jpg)
 
@@ -97,38 +102,47 @@ When the alarm is triggered, an email notification is sent using SNS.
 
 ## Features
 
-* High availability
-* Automatic scaling
-* Health checks
-* Monitoring and alerting
-* Fault tolerance
+* High availability across multiple Availability Zones  
+* Automatic scaling and self-healing infrastructure  
+* Load balancing across instances  
+* Health checks and failover  
+* Monitoring and alerting  
+* Fault tolerance  
 
 ---
 
 ## How to deploy
 
-1. Launch EC2 instances (Amazon Linux)
-2. Install web server (Apache / Nginx)
-3. Deploy simple HTML app
-4. Create Target Group
-5. Register EC2 instances in Target Group
-6. Create Application Load Balancer
-7. Configure listener (HTTP :80 → Target Group)
-8. Create Auto Scaling Group (min: 2, desired: 2)
-9. Attach Target Group to Auto Scaling Group
-10. Configure CloudWatch alarm (CPU > 50%)
-11. Create SNS topic and email subscription
+1. Create a Launch Template with User Data to install and configure the web server automatically  
+2. Launch EC2 instances (Amazon Linux) using the Launch Template  
+3. Deploy a simple HTML application  
+4. Create a Target Group  
+5. Register EC2 instances in the Target Group  
+6. Create an Application Load Balancer  
+7. Configure listener (HTTP :80 → Target Group)  
+8. Create an Auto Scaling Group (min: 2, desired: 2) across multiple Availability Zones  
+9. Attach the Target Group to the Auto Scaling Group  
+10. Configure a CloudWatch alarm (CPU > 50%)  
+11. Create an SNS topic and email subscription  
 
-The application will be accessible via Load Balancer DNS.
+The application is accessible via the Load Balancer DNS.
+
+---
+
+## Security Considerations
+
+- Security Groups restrict access (ALB → EC2 only on HTTP/HTTPS)  
+- EC2 instances should use IAM roles with least privilege  
+- In production, HTTPS (ACM) and AWS WAF should be implemented  
 
 ---
 
 ## Lessons Learned
 
-- Health checks are critical – if they fail, instances are removed from the load balancer
-- Misconfigured security groups can block traffic between ALB and EC2
-- Instances may not register in Target Group if ports or health check paths are incorrect
-- Monitoring and alerting are essential for production environments
+- Health checks are critical – if they fail, instances are removed from the load balancer  
+- Misconfigured security groups can block traffic between ALB and EC2  
+- Instances may not register in Target Group if ports or health check paths are incorrect  
+- Monitoring and alerting are essential for production environments  
 
 ---
 
@@ -149,10 +163,10 @@ The application will be accessible via Load Balancer DNS.
 
 ## Future Improvements
 
-- Infrastructure as Code (Terraform)
-- HTTPS (SSL certificate via ACM)
-- CI/CD pipeline (GitHub Actions)
-- Logging with CloudWatch Logs
+- Infrastructure as Code (Terraform)  
+- HTTPS (SSL certificate via ACM)  
+- CI/CD pipeline (GitHub Actions)  
+- Logging with CloudWatch Logs  
 
 ---
 
