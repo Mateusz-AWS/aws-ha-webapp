@@ -4,7 +4,15 @@ This project simulates a production-like highly available web application enviro
 
 Live Demo: http://alb-web-996721267.us-east-1.elb.amazonaws.com/
 
-This setup ensures high availability by distributing traffic across multiple instances and automatically replacing unhealthy ones.
+This setup ensures high availability by distributing traffic across multiple instances and automatically replacing unhealthy instances.
+
+---
+
+## Why I built this
+
+I built this project to simulate a real production environment and develop hands-on skills required for Cloud Support and Cloud Operations roles.
+
+The goal was to understand how cloud systems behave under failure conditions and how to troubleshoot real-world issues.
 
 ---
 
@@ -12,7 +20,44 @@ This setup ensures high availability by distributing traffic across multiple ins
 
 ![Architecture](Architecture.png)
 
-The application is deployed across multiple Availability Zones using an Application Load Balancer and Auto Scaling Group to ensure high availability and fault tolerance.
+This project simulates a production-like cloud architecture focusing on:
+
+- High availability
+- Fault tolerance
+- Auto-healing infrastructure
+- Monitoring and alerting
+
+Designed as a Cloud Support / DevOps practice environment.
+
+---
+
+## Architecture Overview
+
+The application is deployed across multiple Availability Zones to ensure high availability.
+
+Traffic is distributed by an Application Load Balancer to EC2 instances managed by an Auto Scaling Group.
+
+Health checks ensure only healthy instances receive traffic, while CloudWatch monitors performance and triggers alerts via SNS when thresholds are exceeded.
+
+---
+
+## Troubleshooting Scenarios
+
+During this project I encountered and resolved several real-world issues:
+
+- EC2 instances not registering in Target Group  
+  → Fixed by correcting security group rules and health check configuration  
+
+- Health check failures due to incorrect path  
+  → Resolved by aligning application endpoint with health check settings  
+
+- Load balancer routing issues  
+  → Diagnosed listener and target group configuration problems  
+
+- High CPU usage triggering alarms  
+  → Simulated load and verified CloudWatch and SNS alerting  
+
+These scenarios helped me develop practical troubleshooting skills in AWS environments.
 
 ---
 
@@ -39,6 +84,7 @@ It displays:
 * Basic project information  
 
 The load balancer distributes traffic between instances.
+This simple application is used to demonstrate load balancing, scaling, and failover behaviour.
 
 ---
 
@@ -100,7 +146,7 @@ When the alarm is triggered, an email notification is sent using SNS.
 
 ---
 
-## Features
+## Key Features
 
 * High availability across multiple Availability Zones  
 * Automatic scaling and self-healing infrastructure  
