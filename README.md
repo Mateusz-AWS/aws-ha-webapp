@@ -2,8 +2,6 @@
 
 This project simulates a production-like highly available web application environment on AWS.
 
-Live Demo: http://alb-web-996721267.us-east-1.elb.amazonaws.com/
-
 The setup ensures high availability by distributing traffic across multiple EC2 instances and automatically replacing unhealthy instances.
 
 ---
